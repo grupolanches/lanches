@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  *
- * @author JETHER
+ * @author carlos
  */
 @Entity
 @XmlRootElement
