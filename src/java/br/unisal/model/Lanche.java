@@ -7,7 +7,7 @@ package br.unisal.model;
 
 /**
  *
- * @author Carlos
+ * @author Juliana
  */
 public class Lanche {
     
