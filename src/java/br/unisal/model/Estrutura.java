@@ -5,7 +5,6 @@
  */
 package br.unisal.model;
 
-import static br.unisal.model.EstruturaPedido_.itemPedido;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
