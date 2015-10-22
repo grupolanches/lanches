@@ -7,7 +7,7 @@ package br.unisal.model;
 
 /**
  *
- * @author Carlos
+ * @author Carlos Funo
  */
 public class MateriaPrima {
     
