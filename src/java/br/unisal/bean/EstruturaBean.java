@@ -6,11 +6,10 @@
 package br.unisal.bean;
 
 /**
- *
- * @author JETHER
+ * @author carlos.oliveira
  */
-import br.unisal.dao.PessoaDao;
-import br.unisal.model.Pessoa;
+import br.unisal.dao.GenericDao;
+import br.unisal.model.Estrutura;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,59 +17,61 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
-@ManagedBean(name = "pessoaBean")
 @ViewScoped
-public class EstruturaBean implements Serializable{
-    private static final long serialVersionUID = 1L;    
-    private List pessoas = new ArrayList();
-    private Pessoa pessoa;    
-    private PessoaDao dao;
+@ManagedBean(name = "estruturasPedidoBean")
+public class EstruturaBean implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    private List<Estrutura> estruturas = new ArrayList();
+    private Estrutura estrutura;
+    private GenericDao dao;
 
     //construtor
-    public EstruturaBean() {        
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+    public EstruturaBean() {
+        this.estruturas = this.getDao().getAll(Estrutura.class);
+        this.estrutura = new Estrutura();
     }
+
     //Métodos dos botões 
     public void cadastrar(ActionEvent actionEvent) {
-        getDao().insert(pessoa);
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+        this.getDao().save(this.estruturas);
+        this.estruturas = this.getDao().getAll(Estrutura.class);
+        this.estrutura = new Estrutura();
     }
 
     public void alterar(ActionEvent actionEvent) {
-        getDao().update(pessoa);
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+        this.getDao().update(this.estruturas);
+        this.estruturas = this.getDao().getAll(Estrutura.class);
+        this.estrutura = new Estrutura();
     }
 
     public void excluir(ActionEvent actionEvent) {
-        getDao().remove(pessoa);
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+        this.getDao().remove(this.estruturas);
+        this.estruturas = this.getDao().getAll(Estrutura.class);
+        this.estrutura = new Estrutura();
     }
 
     //getters and setters
-    public Pessoa getPessoa() {
-        return pessoa;
+    public Estrutura getEstrutura() {
+        return this.estrutura;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setEstrutura(Estrutura arg) {
+        this.estrutura = arg;
     }
 
-    public List getPessoas() {
-        return pessoas;
+    public List getEstruturasPedidos() {
+        return this.estruturas;
     }
 
-    public void setPessoas(List pessoas) {
-        this.pessoas = pessoas;
+    public void setEstruturasPedidos(List arg) {
+        this.estruturas = arg;
     }
 
-    public final PessoaDao getDao() {        
-        if(dao == null){
-            dao = new PessoaDao();
+    public final GenericDao getDao() {
+        if (this.dao == null) {
+            this.dao = new GenericDao();
         }
-        return dao;
+        return this.dao;
     }
 }
