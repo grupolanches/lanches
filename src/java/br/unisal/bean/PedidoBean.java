@@ -6,11 +6,10 @@
 package br.unisal.bean;
 
 /**
- *
- * @author JETHER
+ * @author carlos.oliveira
  */
-import br.unisal.dao.PessoaDao;
-import br.unisal.model.Pessoa;
+import br.unisal.dao.GenericDao;
+import br.unisal.model.Pedido;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,59 +17,61 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
-@ManagedBean(name = "pessoaBean")
 @ViewScoped
-public class PedidoBean implements Serializable{
-    private static final long serialVersionUID = 1L;    
-    private List pessoas = new ArrayList();
-    private Pessoa pessoa;    
-    private PessoaDao dao;
+@ManagedBean(name = "pedidoBean")
+public class PedidoBean implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    private List pedidos = new ArrayList();
+    private Pedido pedido;
+    private GenericDao dao;
 
     //construtor
-    public PedidoBean() {        
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+    public PedidoBean() {
+        this.pedidos = this.getDao().getAll(Pedido.class);
+        this.pedido = new Pedido();
     }
+
     //Métodos dos botões 
     public void cadastrar(ActionEvent actionEvent) {
-        getDao().insert(pessoa);
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+        this.getDao().save(this.pedido);
+        this.pedidos = this.getDao().getAll(Pedido.class);
+        this.pedido = new Pedido();
     }
 
     public void alterar(ActionEvent actionEvent) {
-        getDao().update(pessoa);
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+        this.getDao().update(this.pedido);
+        this.pedidos = this.getDao().getAll(Pedido.class);
+        this.pedido = new Pedido();
     }
 
     public void excluir(ActionEvent actionEvent) {
-        getDao().remove(pessoa);
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+        this.getDao().remove(this.pedido);
+        this.pedidos = this.getDao().getAll(Pedido.class);
+        this.pedido = new Pedido();
     }
 
     //getters and setters
-    public Pessoa getPessoa() {
-        return pessoa;
+    public Pedido getPedido() {
+        return this.pedido;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setPedido(Pedido arg) {
+        this.pedido = arg;
     }
 
-    public List getPessoas() {
-        return pessoas;
+    public List getPedidos() {
+        return this.pedidos;
     }
 
-    public void setPessoas(List pessoas) {
-        this.pessoas = pessoas;
+    public void setPedidos(List args) {
+        this.pedidos = args;
     }
 
-    public final PessoaDao getDao() {        
-        if(dao == null){
-            dao = new PessoaDao();
+    public final GenericDao getDao() {
+        if (this.dao == null) {
+            this.dao = new GenericDao();
         }
-        return dao;
+        return this.dao;
     }
 }

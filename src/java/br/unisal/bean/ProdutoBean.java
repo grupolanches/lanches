@@ -6,11 +6,10 @@
 package br.unisal.bean;
 
 /**
- *
- * @author JETHER
+ * @author carlos.oliveira
  */
-import br.unisal.dao.PessoaDao;
-import br.unisal.model.Pessoa;
+import br.unisal.dao.GenericDao;
+import br.unisal.model.Produto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,59 +17,61 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
-@ManagedBean(name = "pessoaBean")
 @ViewScoped
-public class ProdutoBean implements Serializable{
-    private static final long serialVersionUID = 1L;    
-    private List pessoas = new ArrayList();
-    private Pessoa pessoa;    
-    private PessoaDao dao;
+@ManagedBean(name = "produtoBean")
+public class ProdutoBean implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    private List<Produto> produtos = new ArrayList();
+    private Produto produto;
+    private GenericDao dao;
 
     //construtor
-    public ProdutoBean() {        
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+    public ProdutoBean() {
+        this.produtos = this.getDao().getAll(Produto.class);
+        this.produto = new Produto();
     }
+
     //Métodos dos botões 
     public void cadastrar(ActionEvent actionEvent) {
-        getDao().insert(pessoa);
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+        this.getDao().save(this.produto);
+        this.produtos = this.getDao().getAll(Produto.class);
+        this.produto = new Produto();
     }
 
     public void alterar(ActionEvent actionEvent) {
-        getDao().update(pessoa);
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+        this.getDao().update(this.produto);
+        this.produtos = this.getDao().getAll(Produto.class);
+        this.produto = new Produto();
     }
 
     public void excluir(ActionEvent actionEvent) {
-        getDao().remove(pessoa);
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+        this.getDao().remove(this.produto);
+        this.produtos = this.getDao().getAll(Produto.class);
+        this.produto = new Produto();
     }
 
     //getters and setters
-    public Pessoa getPessoa() {
-        return pessoa;
+    public Produto getProduto() {
+        return this.produto;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setProduto(Produto arg) {
+        this.produto = arg;
     }
 
-    public List getPessoas() {
-        return pessoas;
+    public List getProdutos() {
+        return this.produtos;
     }
 
-    public void setPessoas(List pessoas) {
-        this.pessoas = pessoas;
+    public void setProdutos(List arg) {
+        this.produtos = arg;
     }
 
-    public final PessoaDao getDao() {        
-        if(dao == null){
-            dao = new PessoaDao();
+    public final GenericDao getDao() {
+        if (this.dao == null) {
+            this.dao = new GenericDao();
         }
-        return dao;
+        return this.dao;
     }
 }

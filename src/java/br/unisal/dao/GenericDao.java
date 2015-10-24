@@ -6,98 +6,96 @@
 package br.unisal.dao;
 
 import br.unisal.hibernateutil.HibernateUtil;
-import br.unisal.model.Pessoa;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 /**
  *
- * @author jether
+ * @author carlos.oliveira
  */
-public class PessoaDao {
+public class GenericDao {
 
-    public void insert(Pessoa s) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+    public Long save(Object entity) {
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try {
             tx.begin();
-            session.save(s);
+            Long save = (Long) session.save(entity);
             tx.commit();
+            return save;
         } catch (HibernateException e) {
-            System.out.println("Exception PessoaDao.insert(): " + e.getMessage());
             tx.rollback();
+            throw new RuntimeException(e);
         } finally {
             session.close();
         }
     }
 
-    public void update(Pessoa s) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+    public <T> T update(T s) {
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try {
             tx.begin();
-            session.update(s);
+            T save = (T) session.merge(s);
             tx.commit();
+            return save;
         } catch (HibernateException e) {
-            System.out.println("Exception PessoaDao.update(): " + e.getMessage());
             tx.rollback();
+            throw new RuntimeException(e);
         } finally {
             session.close();
         }
     }
 
-    public List<Pessoa> getAll() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+    public <T> List<T> getAll(Class<T> type) {
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
-        List<Pessoa> sensores = new ArrayList<>();
+        List<T> entities = new ArrayList<>();
         try {
             tx.begin();
-            Query query = session.createQuery("FROM Pessoa");
-            sensores = query.list();
+            Criteria criteria = session.createCriteria(type);
+            entities = criteria.list();
             tx.commit();
         } catch (HibernateException e) {
-            System.out.println("Exception PessoaDao.getAll(): " + e.getMessage());
             tx.rollback();
+            throw new RuntimeException(e);
         } finally {
             session.close();
         }
-        return sensores;
+        return entities;
     }
 
-    public Pessoa getById(Pessoa s) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+    public <T> T getById(Class<T> type, Long id) {
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
-        Pessoa sensor = new Pessoa();
+        T entity = null;
         try {
             tx.begin();
-            Query query = session
-                    .createQuery("FROM Pessoa WHERE idPessoa = :id");
-            query.setParameter("id", s.getIdPessoa());
-            sensor = (Pessoa) query.uniqueResult();
+            entity = (T) session.get(type, id);
             tx.commit();
         } catch (HibernateException e) {
-            System.out.println("Exception PessoaDao.getById(): " + e.getMessage());
             tx.rollback();
+            throw new RuntimeException(e);
         } finally {
             session.close();
         }
-        return sensor;
+        return entity;
     }
 
-    public void remove(Pessoa s) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+    public void remove(Object entity) {
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try {
             tx.begin();
-            session.delete(s);
+            session.delete(entity);
             tx.commit();
         } catch (HibernateException e) {
-            System.out.println("Exception PessoaDao.remove(): " + e.getMessage());
             tx.rollback();
+            throw new RuntimeException(e);
         } finally {
             session.close();
         }

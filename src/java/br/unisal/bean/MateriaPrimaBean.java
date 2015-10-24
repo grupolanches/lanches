@@ -6,11 +6,10 @@
 package br.unisal.bean;
 
 /**
- *
- * @author JETHER
+ * @author carlos.oliveira
  */
-import br.unisal.dao.PessoaDao;
-import br.unisal.model.Pessoa;
+import br.unisal.dao.GenericDao;
+import br.unisal.model.MateriaPrima;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,59 +17,61 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
-@ManagedBean(name = "pessoaBean")
 @ViewScoped
-public class MateriaPrimaBean implements Serializable{
-    private static final long serialVersionUID = 1L;    
-    private List pessoas = new ArrayList();
-    private Pessoa pessoa;    
-    private PessoaDao dao;
+@ManagedBean(name = "materiaPrimaBean")
+public class MateriaPrimaBean implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    private List<MateriaPrima> materiasPrima = new ArrayList();
+    private MateriaPrima materiaPrima;
+    private GenericDao dao;
 
     //construtor
-    public MateriaPrimaBean() {        
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+    public MateriaPrimaBean() {
+        this.materiasPrima = this.getDao().getAll(MateriaPrima.class);
+        this.materiaPrima = new MateriaPrima();
     }
+
     //Métodos dos botões 
     public void cadastrar(ActionEvent actionEvent) {
-        getDao().insert(pessoa);
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+        this.getDao().save(this.materiaPrima);
+        this.materiasPrima = this.getDao().getAll(MateriaPrima.class);
+        this.materiaPrima = new MateriaPrima();
     }
 
     public void alterar(ActionEvent actionEvent) {
-        getDao().update(pessoa);
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+        this.getDao().update(this.materiaPrima);
+        this.materiasPrima = this.getDao().getAll(MateriaPrima.class);
+        this.materiaPrima = new MateriaPrima();
     }
 
     public void excluir(ActionEvent actionEvent) {
-        getDao().remove(pessoa);
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+        this.getDao().remove(this.materiaPrima);
+        this.materiasPrima = this.getDao().getAll(MateriaPrima.class);
+        this.materiaPrima = new MateriaPrima();
     }
 
     //getters and setters
-    public Pessoa getPessoa() {
-        return pessoa;
+    public MateriaPrima getMateriaPrima() {
+        return this.materiaPrima;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setMateriaPrima(MateriaPrima pessoa) {
+        this.materiaPrima = pessoa;
     }
 
-    public List getPessoas() {
-        return pessoas;
+    public List getMateriaPrimas() {
+        return this.materiasPrima;
     }
 
-    public void setPessoas(List pessoas) {
-        this.pessoas = pessoas;
+    public void setMateriaPrimas(List pessoas) {
+        this.materiasPrima = pessoas;
     }
 
-    public final PessoaDao getDao() {        
-        if(dao == null){
-            dao = new PessoaDao();
+    public final GenericDao getDao() {
+        if (this.dao == null) {
+            this.dao = new GenericDao();
         }
-        return dao;
+        return this.dao;
     }
 }

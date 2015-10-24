@@ -6,11 +6,10 @@
 package br.unisal.bean;
 
 /**
- *
- * @author JETHER
+ * @author carlos.oliveira
  */
-import br.unisal.dao.PessoaDao;
-import br.unisal.model.Pessoa;
+import br.unisal.dao.GenericDao;
+import br.unisal.model.Cliente;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,58 +19,59 @@ import javax.faces.event.ActionEvent;
 
 @ViewScoped
 @ManagedBean(name = "clienteBean")
-public class ClienteBean implements Serializable{
-    
-    private static final long serialVersionUID = 1L;    
-    private List pessoas = new ArrayList();
-    private Pessoa pessoa;    
-    private PessoaDao dao;
+public class ClienteBean implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    private List clientes = new ArrayList();
+    private Cliente cliente;
+    private GenericDao dao;
 
     //construtor
-    public ClienteBean() {        
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+    public ClienteBean() {
+        this.clientes = this.getDao().getAll(Cliente.class);
+        this.cliente = new Cliente();
     }
+
     //Métodos dos botões 
     public void cadastrar(ActionEvent actionEvent) {
-        getDao().insert(pessoa);
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+        this.getDao().save(this.cliente);
+        this.clientes = this.getDao().getAll(Cliente.class);
+        this.cliente = new Cliente();
     }
 
     public void alterar(ActionEvent actionEvent) {
-        getDao().update(pessoa);
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+        this.getDao().update(this.cliente);
+        this.clientes = this.getDao().getAll(Cliente.class);
+        this.cliente = new Cliente();
     }
 
     public void excluir(ActionEvent actionEvent) {
-        getDao().remove(pessoa);
-        pessoas = getDao().getAll();
-        pessoa = new Pessoa();
+        this.getDao().remove(this.cliente);
+        this.clientes = this.getDao().getAll(Cliente.class);
+        this.cliente = new Cliente();
     }
 
     //getters and setters
-    public Pessoa getPessoa() {
-        return pessoa;
+    public Cliente getCliente() {
+        return this.cliente;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setCliente(Cliente arg) {
+        this.cliente = arg;
     }
 
-    public List getPessoas() {
-        return pessoas;
+    public List getClientes() {
+        return this.clientes;
     }
 
-    public void setPessoas(List pessoas) {
-        this.pessoas = pessoas;
+    public void setClientes(List arg) {
+        this.clientes = arg;
     }
 
-    public final PessoaDao getDao() {        
-        if(dao == null){
-            dao = new PessoaDao();
+    public final GenericDao getDao() {
+        if (this.dao == null) {
+            this.dao = new GenericDao();
         }
-        return dao;
+        return this.dao;
     }
 }
