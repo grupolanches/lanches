@@ -7,8 +7,7 @@
 package br.unisal.ws;
 
 import br.unisal.dao.GenericDao;
-import br.unisal.model.Cliente;
-import br.unisal.model.Pessoa;
+import br.unisal.model.MateriaPrima;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -30,25 +29,25 @@ import javax.ws.rs.core.UriInfo;
  * @author JETHER
  */
 @Path("pessoa")
-public class PessoaResource {
+public class MateriaPrimaResource {
 
     @Context
     private UriInfo context;
     private GenericDao dao;
 
     /**
-     * Creates a new instance of PessoaResource
+     * Creates a new instance of MateriaPrimaResource
      */
-    public PessoaResource() {
+    public MateriaPrimaResource() {
     }
 
     /** */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPessoas() {        
-        GenericEntity<List<Pessoa>> pessoas = 
-                new GenericEntity<List<Pessoa>>(getDao()
-                        .getAll(Pessoa.class)){};       
+    public Response getMateriaPrimas() {        
+        GenericEntity<List<MateriaPrima>> pessoas = 
+                new GenericEntity<List<MateriaPrima>>(getDao()
+                        .getAll(MateriaPrima.class)){};       
         return Response
                 .ok(pessoas)
                 .header("Access-Control-Allow-Origin", "*")
@@ -58,40 +57,40 @@ public class PessoaResource {
     }
     
     /**
-     * Retrieves representation of an instance of br.unisal.ws.PessoaResource
+     * Retrieves representation of an instance of br.unisal.ws.MateriaPrimaResource
      * @param id
-     * @return an instance of br.unisal.model.Pessoa
+     * @return an instance of br.unisal.model.MateriaPrima
      */
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPessoa(@PathParam("id") Integer id) {
-        Pessoa p = new Pessoa();
-        p.setIdPessoa(id);
+    public Response getMateriaPrima(@PathParam("id") Long id) {
+        MateriaPrima p = new MateriaPrima();
+        p.setId(id);
         return Response
-                .ok(getDao().getById(Cliente.class, new Long(id)))
+                .ok(getDao().getById(MateriaPrima.class, new Long(id)))
                 .header("Access-Control-Allow-Origin", "*")
                 .header("Access-Control-Allow-Headers", "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With")
                 .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS, HEAD")
                 .build();
     }
-    /*public Pessoa getPessoa(@PathParam("id") Integer id) {
-        Pessoa p = new Pessoa();
-        p.setIdPessoa(id);
+    /*public MateriaPrima getMateriaPrima(@PathParam("id") Long id) {
+        MateriaPrima p = new MateriaPrima();
+        p.setId(id);
         return getDao().getById(p);
     }*/
     
     /**
-     * DELETE method for deleting an instance of PessoaResource     * 
+     * DELETE method for deleting an instance of MateriaPrimaResource     * 
      * @param id
      * @return message of deleted pessoa with error or not
      */
     @DELETE
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deletePessoa(@PathParam("id") Integer id) {
-        Pessoa p = new Pessoa();
-        p.setIdPessoa(id);        
+    public Response deleteMateriaPrima(@PathParam("id") Long id) {
+        MateriaPrima p = new MateriaPrima();
+        p.setId(id);        
         getDao().remove(p);
         String msg = "{\"msg\":\"Exclusão realizada com sucesso!\"}";
         return Response
@@ -103,7 +102,7 @@ public class PessoaResource {
     }
 
     /**
-     * PUT method for updating or creating an instance of PessoaResource
+     * PUT method for updating or creating an instance of MateriaPrimaResource
      * @param p representation for the resource
      * @param id
      * @return an HTTP response with content of the updated or created resource.
@@ -112,9 +111,9 @@ public class PessoaResource {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updatePessoa(Pessoa p, 
-            @PathParam("id")Integer id) {
-        p.setIdPessoa(id);
+    public Response updateMateriaPrima(MateriaPrima p, 
+            @PathParam("id")Long id) {
+        p.setId(id);
         getDao().update(p);
         String msg = "{\"msg\":\"Atualização realizada com sucesso!\"}";
         return Response
@@ -126,7 +125,7 @@ public class PessoaResource {
     }
     
     /**
-     * POST method for creating an instance of PessoaResource
+     * POST method for creating an instance of MateriaPrimaResource
      * 
      * @param p
      * @return 
@@ -134,7 +133,7 @@ public class PessoaResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createPessoa(Pessoa p) {        
+    public Response createMateriaPrima(MateriaPrima p) {        
         getDao().save(p);
         String msg = "{\"msg\":\"Inserção realizada com sucesso!\"}";
         return Response

@@ -100,5 +100,20 @@ public class GenericDao {
             session.close();
         }
     }
+    
+    public void deleteAll(Class klass) {
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            tx.begin();
+            session.createQuery("DELETE FROM " + klass.getSimpleName()).executeUpdate();
+            tx.commit();
+        } catch (HibernateException e) {
+            tx.rollback();
+            throw new RuntimeException(e);
+        } finally {
+            session.close();
+        }
+    }
 
 }
