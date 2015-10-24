@@ -77,6 +77,6 @@ public class ClienteTest extends TestBase {
         clienteEncontrado = this.dao.getById(Cliente.class, save);
 
         Assert.assertNull(clienteEncontrado);
-
     }
+    
 }
