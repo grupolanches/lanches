@@ -28,7 +28,7 @@ import javax.ws.rs.core.UriInfo;
  *
  * @author JETHER
  */
-@Path("pessoa")
+@Path("pedido")
 public class PedidoResource {
 
     @Context

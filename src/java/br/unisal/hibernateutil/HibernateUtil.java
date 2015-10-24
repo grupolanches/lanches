@@ -10,7 +10,7 @@ public class HibernateUtil {
     private static HibernateUtil instance;
     private static final String DEFAULT_CONFIG = "hibernate.cfg.xml";
 
-    public static HibernateUtil getInstance(String config) {
+    public synchronized static HibernateUtil getInstance(String config) {
         if (instance == null) {
             instance = new HibernateUtil();
             try {

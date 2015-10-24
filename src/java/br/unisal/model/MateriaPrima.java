@@ -7,6 +7,7 @@ package br.unisal.model;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +18,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -61,7 +64,8 @@ public class MateriaPrima implements Serializable {
         this.valor = valor;
     }
 
-    @OneToMany(mappedBy = "materiaPrima")
+    @OneToMany(mappedBy = "materiaPrima", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Estrutura> getEstruturas() {
         return estruturas;
     }
@@ -70,7 +74,8 @@ public class MateriaPrima implements Serializable {
         this.estruturas = estruturas;
     }
 
-    @OneToMany(mappedBy = "materiaPrima")
+    @OneToMany(mappedBy = "materiaPrima", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<EstruturaPedido> getEstruturasPedido() {
         return estruturasPedido;
     }

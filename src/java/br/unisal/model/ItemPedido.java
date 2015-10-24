@@ -7,6 +7,7 @@ package br.unisal.model;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +20,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  * @author Carlos
@@ -92,7 +95,8 @@ public class ItemPedido implements Serializable {
         this.quantidade = quantidade;
     }
 
-    @OneToMany(mappedBy = "itemPedido")
+    @OneToMany(mappedBy = "itemPedido", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<EstruturaPedido> getEstruturas() {
         return estruturas;
     }
