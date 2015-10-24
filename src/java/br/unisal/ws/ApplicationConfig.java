@@ -38,7 +38,9 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(br.unisal.ws.CalcResource.class);
-        resources.add(br.unisal.ws.PessoaResource.class);
+        resources.add(br.unisal.ws.ClienteResource.class);
+        resources.add(br.unisal.ws.MateriaPrimaResource.class);
+        resources.add(br.unisal.ws.PedidoResource.class);
     }
     
 }

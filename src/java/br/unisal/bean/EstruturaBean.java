@@ -18,7 +18,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 @ViewScoped
-@ManagedBean(name = "estruturasPedidoBean")
+@ManagedBean(name = "estruturasBean")
 public class EstruturaBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
