@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -37,6 +38,13 @@ public class MateriaPrima implements Serializable {
     private List<Estrutura> estruturas;
     private List<EstruturaPedido> estruturasPedido;
 
+    public MateriaPrima() {
+    }
+
+    public MateriaPrima(String json) {
+        this.id = Long.parseLong(json);
+    }    
+    
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,6 +74,7 @@ public class MateriaPrima implements Serializable {
 
     @OneToMany(mappedBy = "materiaPrima", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonIgnore
     public List<Estrutura> getEstruturas() {
         return estruturas;
     }
@@ -76,6 +85,7 @@ public class MateriaPrima implements Serializable {
 
     @OneToMany(mappedBy = "materiaPrima", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonIgnore
     public List<EstruturaPedido> getEstruturasPedido() {
         return estruturasPedido;
     }
