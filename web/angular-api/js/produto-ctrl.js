@@ -1,15 +1,15 @@
 var app = angular.module('lanches', []);
-var urlPath = "http://localhost:8080/lanches/api/cliente/";
+var urlPath = "http://localhost:8080/lanches/api/produto/";
 
-app.controller('clienteCtrl', function ($scope, $http, $timeout) {
-    $scope.clientes = [];
-    $scope.cliente = {};
+app.controller('produtoCtrl', function ($scope, $http, $timeout) {
+    $scope.produtos = [];
+    $scope.produto = {};
 
-    $scope.loadClientes = function () {
+    $scope.loadProdutos = function () {
         $http.get(urlPath, {cache: false})
                 .success(function (response) {
                     //console.log(response);
-                    $scope.clientes = response;
+                    $scope.produtos = response;
                 });
         $scope.config = {
             itemsPerPage: 5,
@@ -32,20 +32,20 @@ app.controller('clienteCtrl', function ($scope, $http, $timeout) {
             url: urlPath + id,
             method: 'GET'
         }).success(function (response) {
-            $scope.cliente = response;
-            jQuery('[href="#formCliente"]')[0].click();
+            $scope.produto = response;
+            jQuery('[href="#formProduto"]')[0].click();
         });
     };
 
-    $scope.save = function (cliente) {
-        var values = JSON.stringify(cliente);
+    $scope.save = function (produto) {
+        var values = JSON.stringify(produto);
         console.log(values);
         
         var method;
         var url;
-        if (cliente.id != null) {
+        if (produto.id != null) {
             method = 'PUT';
-            url = urlPath + cliente.id;
+            url = urlPath + produto.id;
         } else {
             method = 'POST';
             url = urlPath;
@@ -67,6 +67,6 @@ app.controller('clienteCtrl', function ($scope, $http, $timeout) {
     };
 
     var interval = setInterval(function () {
-        $scope.loadClientes();
+        $scope.loadProdutos();
     }, 2000);
 });
