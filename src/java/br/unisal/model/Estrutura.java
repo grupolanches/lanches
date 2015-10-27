@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * @author Carlos
@@ -24,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
 @Entity
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = {"id", "produto", "materiaPrima", "quantidade"})
+@XmlType(propOrder = {"id", "materiaPrima", "quantidade"})
 public class Estrutura implements Serializable {
 
     private Long id;
@@ -44,7 +45,8 @@ public class Estrutura implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "idPedido")
+    @JoinColumn(name = "idProduto")
+    @JsonIgnore
     public Produto getProduto() {
         return produto;
     }

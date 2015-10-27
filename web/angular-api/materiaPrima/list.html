@@ -33,8 +33,6 @@
                                 <th>ID</th>
                                 <th>Nome</th>
                                 <th>Valor</th> 
-                                <th>Estrutura</th>
-                                <th>EstruturaPedido</th>
                                 <th>Atualizar</th>
                                 <th>Deletar</th>
                             </tr>
@@ -44,19 +42,15 @@
                                 <th>ID</th>
                                 <th>Nome</th>
                                 <th>Valor</th> 
-                                <th>Estrutura</th>
-                                <th>EstruturaPedido</th>
                                 <th>Atualizar</th>
                                 <th>Deletar</th>
                             </tr>
                         </tfoot>
                         <tbody>
-                            <tr ng-repeat="m in materiaPrima">
+                            <tr ng-repeat="m in materiasPrima">
                                 <td at-implicit at-sortable width="150" at-initial-sorting="asc">{{ m.id }}</td>
                                 <td at-implicit at-sortable width="150">{{ m.nome }}</td>
                                 <td at-implicit at-sortable>{{ m.valor }}</td>
-                                <td at-implicit at-sortable>{{ m.estrutura }}</td>
-                                <td at-implicit at-sortable>{{ m.estruturapedido }}</td>
                                 <td>
                                     <p>
                                         <a ng-click="update(m.id)" href="#" class="btn btn-danger btn-small">

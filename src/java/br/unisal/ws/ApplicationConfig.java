@@ -41,6 +41,7 @@ public class ApplicationConfig extends Application {
         resources.add(br.unisal.ws.ClienteResource.class);
         resources.add(br.unisal.ws.MateriaPrimaResource.class);
         resources.add(br.unisal.ws.PedidoResource.class);
+        resources.add(br.unisal.ws.ProdutoResource.class);
     }
     
 }

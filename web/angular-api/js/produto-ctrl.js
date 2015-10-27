@@ -1,20 +1,20 @@
 var app = angular.module('lanches', []);
 var urlPath = "http://localhost:8080/lanches/api/produto/";
+var urlMateriaPath = "http://localhost:8080/lanches/api/materiaPrima/";
 
 app.controller('produtoCtrl', function ($scope, $http, $timeout) {
     $scope.produtos = [];
     $scope.produto = {};
+    $scope.materiasPrimaOpcoes = [];
 
     $scope.loadProdutos = function () {
         $http.get(urlPath, {cache: false})
                 .success(function (response) {
-                    //console.log(response);
                     $scope.produtos = response;
+                }).error(function (status) {
+                    console.log("Error: ");
+                    console.log(status);
                 });
-        $scope.config = {
-            itemsPerPage: 5,
-            fillLastPage: true
-        }
     };
 
     $scope.delete = function (id) {
@@ -37,7 +37,18 @@ app.controller('produtoCtrl', function ($scope, $http, $timeout) {
         });
     };
 
+    $scope.addEstrutura = function() {
+        if ($scope.produto.estruturas == null) {
+            $scope.produto.estruturas = [];
+        }
+        $scope.produto.estruturas.push({});
+    };
+
     $scope.save = function (produto) {
+        for (var i = 0; i < produto.estruturas.length; i++ ) {
+            delete produto.estruturas[i].$$hashKey;
+        }
+        
         var values = JSON.stringify(produto);
         console.log(values);
         
@@ -69,4 +80,9 @@ app.controller('produtoCtrl', function ($scope, $http, $timeout) {
     var interval = setInterval(function () {
         $scope.loadProdutos();
     }, 2000);
+    
+    $http.get(urlMateriaPath, {cache: false})
+        .success(function (response) {
+            $scope.materiasPrimaOpcoes = response;
+        });
 });

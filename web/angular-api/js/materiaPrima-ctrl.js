@@ -2,14 +2,14 @@ var app = angular.module('lanches', []);
 var urlPath = "http://localhost:8080/lanches/api/materiaPrima/";
 
 app.controller('materiaPrimaCtrl', function ($scope, $http, $timeout) {
-    $scope.materiasprima = [];
+    $scope.materiasPrima = [];
     $scope.materiaprima = {};
 
     $scope.loadMateriaPrima = function () {
         $http.get(urlPath, {cache: false})
                 .success(function (response) {
                     //console.log(response);
-                    $scope.materiasprima = response;
+                    $scope.materiasPrima = response;
                 });
         $scope.config = {
             itemsPerPage: 5,
