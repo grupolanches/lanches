@@ -7,6 +7,7 @@
 package br.unisal.ws;
 
 import br.unisal.dao.GenericDao;
+import br.unisal.model.ItemPedido;
 import br.unisal.model.Pedido;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -113,6 +114,9 @@ public class PedidoResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updatePedido(Pedido p, 
             @PathParam("id")Long id) {
+        for (ItemPedido item : p.getItensPedido()) {
+            item.setPedido(p);
+        }
         p.setId(id);
         getDao().update(p);
         String msg = "{\"msg\":\"Atualização realizada com sucesso!\"}";
@@ -134,6 +138,9 @@ public class PedidoResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createPedido(Pedido p) {        
+        for (ItemPedido item : p.getItensPedido()) {
+            item.setPedido(p);
+        }
         getDao().save(p);
         String msg = "{\"msg\":\"Inserção realizada com sucesso!\"}";
         return Response

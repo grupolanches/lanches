@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -29,7 +30,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 @Entity
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = {"id", "pedido", "produto", "valorTotal", "valorUnitario", "quantidade"})
+@XmlType(propOrder = {"id", "produto", "valorTotal", "valorUnitario", "quantidade"})
 public class ItemPedido implements Serializable {
 
     private Long id;
@@ -53,6 +54,7 @@ public class ItemPedido implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "idPedido")
+    @JsonIgnore
     public Pedido getPedido() {
         return pedido;
     }

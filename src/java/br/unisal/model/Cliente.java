@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -101,6 +102,7 @@ public class Cliente implements Serializable {
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonIgnore
     public List<Pedido> getPedidos() {
         return pedidos;
     }

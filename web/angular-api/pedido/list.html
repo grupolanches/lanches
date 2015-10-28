@@ -13,15 +13,15 @@
         <script src="../js/jquery.datatables.min.js"></script>
         <script src="../js/bootstrap.datatables.min.js"></script>
         <script src="../js/bootstrap-table.js"></script>
-        <script src="../js/angular.min.js"></script>
-        <script src="../js/cliente-ctrl.js"></script>        
+        <script src="../js/angular.js"></script>
+        <script src="../js/pedidoCtrl.js"></script>        
     </head>
     <body ng-app="lanches">
         <div class="container" ng-controller="pedidoCtrl">
             <h2>Diversos</h2><br/>
             <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#tabela">Gerenciamento de Pedidos</a></li> 
-                <li><a data-toggle="tab" href="#formCliente">Cadastro Pedido</a></li>                
+                <li class="active"><a data-toggle="tab" href="#tabela" ng-click="limparPedido()">Gerenciamento de Pedidos</a></li> 
+                <li><a data-toggle="tab" href="#formPedido">Cadastro Pedido</a></li>                
             </ul>
             <div class="tab-content">
                 <div id="tabela" class="tab-pane fade in active" ><br/><br/>
@@ -31,46 +31,64 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>data do Pedido</th>
+                                <th>Data do Pedido</th>
                                 <th>Cliente</th> 
-                                <th>Data entrega</th>
+                                <th>Data Entrega</th>
                                 <th>Valor Total</th>
                                 <th>Data Cancelamento</th>
                                 <th>Atualizar</th>
-                                <th>Deletar</th>
+                                <th>Finalizar</th>
+                                <th>Cancelar</th>
+                                <th>Visualizar</th>
                             </tr>
                         </thead> 
                         <tfoot>
                             <tr>
                                 <th>ID</th>
-                                <th>data do Pedido</th>
+                                <th>Data do Pedido</th>
                                 <th>Cliente</th> 
-                                <th>Data entrega</th>
+                                <th>Data Entrega</th>
                                 <th>Valor Total</th>
                                 <th>Data Cancelamento</th>
                                 <th>Atualizar</th>
-                                <th>Deletar</th>
+                                <th>Finalizar</th>
+                                <th>Cancelar</th>
+                                <th>Visualizar</th>
                             </tr>
                         </tfoot>
                         <tbody>
                             <tr ng-repeat="c in pedidos">
                                 <td at-implicit at-sortable width="150" at-initial-sorting="asc">{{ c.id }}</td>
-                                <td at-implicit at-sortable width="150">{{ c.dataPedido }}</td>
-                                <td at-implicit at-sortable>{{ c.cliente }}</td>
-                                <td at-implicit at-sortable>{{ c.dataEntrega }}</td>
-                                <td at-implicit at-sortable>{{ c.valorTotal }}</td>
-                                <td at-implicit at-sortable>{{ c.dataCancelamento }}</td>
+                                <td at-implicit at-sortable width="150">{{c.dataPedido | date:"dd/MM/yyyy 'as' h:mma"}}</td>
+                                <td at-implicit at-sortable>{{ c.cliente.nome }}/{{c.cliente.cidade}}</td>
+                                <td at-implicit at-sortable>{{c.dataEntrega | date:"dd/MM/yyyy 'as' h:mma"}}</td>
+                                <td at-implicit at-sortable>{{ c.valorTotal | currency:"R$" }}</td>
+                                <td at-implicit at-sortable>{{c.dataCancelamento | date:"dd/MM/yyyy 'as' h:mma"}}</td>
                                 <td>
-                                    <p>
+                                    <p ng-show="esconderComandos(c)">
                                         <a ng-click="update(c.id)" href="#" class="btn btn-danger btn-small">
                                             <span class="glyphicon glyphicon-edit" title="Atualizar"></span>
                                         </a>
                                     </p>
                                 </td>
                                 <td>
-                                    <p>
-                                        <a ng-click="delete(c.id)" href="#" class="btn btn-danger btn-small">
+                                    <p ng-show="esconderComandos(c)">
+                                        <a ng-click="finalizar(c)" href="#" class="btn btn-danger btn-small">
+                                            <span class="glyphicon glyphicon-apple" title="Finalizar"></span>
+                                        </a>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p ng-show="esconderComandos(c)">
+                                        <a ng-click="delete(c)" href="#" class="btn btn-danger btn-small">
                                             <span class="glyphicon glyphicon-remove" title="Deletar"></span>
+                                        </a>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        <a ng-click="visualizar(c)" href="#" class="btn btn-danger btn-small">
+                                            <span class="glyphicon glyphicon-bell" title="Vosializar"></span>
                                         </a>
                                     </p>
                                 </td>
@@ -79,39 +97,47 @@
                     </table>
                     <at-pagination at-list="pedidos" at-config="config"></at-pagination>
                 </div>
-                <div id="formCliente" class="tab-pane fade">
+                <div id="formPedido" class="tab-pane fade">
                     <br/><br/>
                     <div class="panel-body">
                         <form class="form-horizontal" role="form" action="#">
                             <input type="hidden" value="{{pedidos.id}}" ng-model="pedidos.id" />
-                            <div class="form-group">
+                            <div class="form-group" ng-if="pedido.dataPedido">
                                 <label for="dataPedido" class="col-sm-2 control-label">Data do Pedido</label>
                                 <div class="col-sm-10">
-                                    <input type="date" ng-model="pedido.dataPedido" class="form-control" id="dataPedido" placeholder="dataPedido" required/>
+                                    {{pedido.dataPedido | date:"dd/MM/yyyy 'as' h:mma"}}
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="pedido.dataCancelamento">
+                                <label for="dataCancelamento" class="col-sm-2 control-label">Data do Cancelamento</label>
+                                <div class="col-sm-10">
+                                    {{pedido.dataCancelamento | date:"dd/MM/yyyy 'as' h:mma"}}
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="pedido.dataEntrega">
+                                <label for="dataEntrega" class="col-sm-2 control-label">Data da Entrega</label>
+                                <div class="col-sm-10">
+                                    {{pedido.dataEntrega | date:"dd/MM/yyyy 'as' h:mma"}}
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="Cliente" class="col-sm-2 control-label">Cliente</label>
                                 <div class="col-sm-10">
-                                    <input type="text" ng-model="pedido.idCliente" class="form-control" id="idCliente" placeholder="Cliente" required/>
+                                    <select ng-model="pedido.cliente"
+                                            ng-options="cliente.nome for cliente in clienteOpcoes track by cliente.id">
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="dataEntrega" class="col-sm-2 control-label">Data de Entrega</label>
+                                <label for="ItensPedido" class="col-sm-2 control-label">Itens do Pedido</label>
                                 <div class="col-sm-10">
-                                    <input type="date" ng-model="pedido.dataEntrega" class="form-control" id="dataEntrega" placeholder="dataEntrega" required/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="valorTotal" class="col-sm-2 control-label">Valor Total</label>
-                                <div class="col-sm-10">
-                                    <input type="long" ng-model="pedido.vlrtotal" class="form-control" id="vlrTotal" placeholder="vlrTotal" required/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="dataCancelamento" class="col-sm-2 control-label">Data Cancelamento</label>
-                                <div class="col-sm-10">
-                                    <input type="date" ng-model="pedido.dtaCancelamento" class="form-control" id="dtaCancelamento" placeholder="dtaCancelamento" required/>
+                                    <div ng-repeat="item in pedido.itensPedido">
+                                        <select ng-model="item.produto"
+                                                ng-options="produto.nome for produto in produtoOpcoes track by produto.id">
+                                        </select>
+                                        <input type="number" ng-model="item.quantidade" />
+                                    </div>
+                                    <p ng-click="addItem()">Adicionar</p>
                                 </div>
                             </div>
                             <div class="form-group">
